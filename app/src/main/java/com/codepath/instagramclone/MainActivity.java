@@ -26,7 +26,11 @@ import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SaveCallback;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -67,10 +71,12 @@ public class MainActivity extends AppCompatActivity {
                 String description = etDescription.getText().toString();
                 if (description.isEmpty()) {
                     Toast.makeText(MainActivity.this, "Description cannot be empty", Toast.LENGTH_SHORT);
+                    pbload.setVisibility(ProgressBar.INVISIBLE);
                     return;
                 }
                 if (photoFile == null || ivPostImage.getDrawable() == null) {
-                    Toast.makeText(MainActivity.this, "There is image", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(MainActivity.this, "There is no image", Toast.LENGTH_SHORT).show();
+                    pbload.setVisibility(ProgressBar.INVISIBLE);
                     return;
                 }
                 ParseUser currentUser = ParseUser.getCurrentUser();
@@ -126,14 +132,13 @@ public class MainActivity extends AppCompatActivity {
         post.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
+                pbload.setVisibility(ProgressBar.INVISIBLE);
                 if (e != null) {
-                    pbload.setVisibility(ProgressBar.INVISIBLE);
                     Log.e(TAG, "Error while saving", e);
                     Toast.makeText(MainActivity.this, "Error while saving!", Toast.LENGTH_SHORT);
                     return;
                 }
 
-                pbload.setVisibility(ProgressBar.INVISIBLE);
                 Log.i(TAG, "Post save was successful!");
                 etDescription.setText("");
                 ivPostImage.setImageResource(0);

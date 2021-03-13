@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.parse.LogInCallback;
 import com.parse.ParseException;
 import com.parse.ParseUser;
+import com.parse.SignUpCallback;
 
 public class LoginActivity extends AppCompatActivity {
 
@@ -22,6 +23,7 @@ public class LoginActivity extends AppCompatActivity {
     private EditText etUsername;
     private EditText etPassword;
     private Button btnLogin;
+    private Button btnSignup;
     private ProgressBar pbloading;
 
     @Override
@@ -33,6 +35,17 @@ public class LoginActivity extends AppCompatActivity {
             goMainActivity();
         }
 
+        btnSignup = findViewById(R.id.btnSignUp);
+        btnSignup.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i(TAG, "onClick signup button");
+                pbloading.setVisibility(ProgressBar.VISIBLE);
+                String username = etUsername.getText().toString();
+                String password = etPassword.getText().toString();
+                signupUser(username, password);
+            }
+        });
         etUsername = findViewById(R.id.tvUsername);
         etPassword = findViewById(R.id.tvPassword);
         pbloading = findViewById(R.id.pbloading);
@@ -45,6 +58,27 @@ public class LoginActivity extends AppCompatActivity {
                 String username = etUsername.getText().toString();
                 String password = etPassword.getText().toString();
                 loginUser(username, password);
+            }
+        });
+    }
+
+    private void signupUser(String username, String password) {
+        ParseUser user = new ParseUser();
+        user.setUsername(username);
+        user.setPassword(password);
+        // user.setEmail();
+        user.signUpInBackground(new SignUpCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e != null) {
+                    pbloading.setVisibility(ProgressBar.INVISIBLE);
+                    Log.e(TAG, "Issue with signup", e);
+                    return;
+                }
+
+                goMainActivity();
+                pbloading.setVisibility(ProgressBar.INVISIBLE);
+                Toast.makeText(LoginActivity.this, "Success!", Toast.LENGTH_SHORT);
             }
         });
     }
