@@ -70,7 +70,7 @@ public class MainActivity extends AppCompatActivity {
                 pbload.setVisibility(ProgressBar.VISIBLE);
                 String description = etDescription.getText().toString();
                 if (description.isEmpty()) {
-                    Toast.makeText(MainActivity.this, "Description cannot be empty", Toast.LENGTH_SHORT);
+                    Toast.makeText(MainActivity.this, "Description cannot be empty", Toast.LENGTH_SHORT).show();
                     pbload.setVisibility(ProgressBar.INVISIBLE);
                     return;
                 }
@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
                 Bitmap takenImage = BitmapFactory.decodeFile(photoFile.getAbsolutePath());
                 ivPostImage.setImageBitmap(takenImage);
             } else {
-                Toast.makeText(this, "Picture wasn't taken!", Toast.LENGTH_SHORT);
+                Toast.makeText(this, "Picture wasn't taken!", Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -127,15 +127,15 @@ public class MainActivity extends AppCompatActivity {
     private void savePost(String description, ParseUser currentUser, File photoFile) {
         Post post = new Post();
         post.setDescription(description);
-        post.setUser(currentUser);
         post.setImage(new ParseFile(photoFile));
+        post.setUser(currentUser);
         post.saveInBackground(new SaveCallback() {
             @Override
             public void done(ParseException e) {
                 pbload.setVisibility(ProgressBar.INVISIBLE);
                 if (e != null) {
                     Log.e(TAG, "Error while saving", e);
-                    Toast.makeText(MainActivity.this, "Error while saving!", Toast.LENGTH_SHORT);
+                    Toast.makeText(MainActivity.this, "Error while saving!", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
