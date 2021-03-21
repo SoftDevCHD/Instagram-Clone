@@ -21,8 +21,8 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
     private Context context;
     private List<Post> posts;
 
-    public PostsAdapter(Context contect, List<Post> posts) {
-        this.context = contect;
+    public PostsAdapter(Context context, List<Post> posts) {
+        this.context = context;
         this.posts = posts;
     }
 
@@ -62,7 +62,7 @@ public class PostsAdapter extends RecyclerView.Adapter<PostsAdapter.ViewHolder> 
             tvUsername.setText(post.getUser().getUsername());
             ParseFile pic = post.getImage();
             if (pic != null) {
-                Glide.with(context).load(post.getImage().getUrl()).into(ivPicture);
+                Glide.with(context).load(pic.getUrl()).into(ivPicture);
             }
         }
     }
